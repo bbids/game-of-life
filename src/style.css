@@ -11,15 +11,11 @@ body {
   background-color: grey;
 }
 
-p {
-  height: 25%;
-}
-
 canvas {
   margin: 0;
   height: 100vh;
   background-color: black;
-  border: 0.5em solid blueviolet;
+  border: 0.5em solid rgb(105, 21, 184);
 }
 
 .anomaly-header__warningText {
