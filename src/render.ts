@@ -72,6 +72,23 @@ canvas.addEventListener('mouseup', () => {
   canvas.removeEventListener('mousemove', onMouseMove);
 })
 
+canvas.addEventListener('click', (event) => {
+  const { displacementX, displacementY, scale } = cameraTransform;
+
+  const originX = displacementX * scale;
+  const originY = displacementY * scale;
+
+  const i = Math.floor((event.clientX / scale - displacementX) / blockSize); 
+  const j = Math.floor((event.clientY / scale - displacementY) / blockSize);
+
+  console.log(i, j);
+
+  const squareX = originX + i * blockSize * scale;
+  const squareY = originY + j * blockSize * scale;
+
+  ctx.fillRect(squareX, squareY, blockSize * scale, blockSize * scale);
+})
+
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawGrid();
