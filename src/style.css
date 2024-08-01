@@ -4,30 +4,29 @@
 }
 
 body {
-  display: flex;
-  flex-direction: column;
-
   margin: 0;
-  background-color: grey;
+  width: 100vw;
+  height: 100vh;
 }
 
 canvas {
-  margin: 0;
-  height: 100vh;
-  background-color: black;
-  border: 0.5em solid rgb(105, 21, 184);
+  margin-bottom: 100px;
+  image-rendering: crisp-edges;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
 }
 
-.anomaly-header__warningText {
-  color: red;
-  font-weight: bold;
-}
-
-.anomaly-header {
+.anomalyHeader {
   display: flex;
   justify-content: space-between;
-}
 
-.anomaly-header__exit-btn {
-  width: 5vw;
+  .warningText {
+    color: red;
+    font-weight: bold;
+  }
+
+  .exit-btn {
+    width: 5vw;
+  }
 }
