@@ -1,3 +1,9 @@
+/**
+ * Zooming and panning:
+ * https://www.sandromaglione.com/articles/infinite-canvas-html-with-zoom-and-pan#convert-coordinates
+ * https://stackoverflow.com/questions/2916081/zoom-in-on-a-point-using-scale-and-translate
+ */
+
 const canvas = document.getElementById('main-canvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d')!;
 
@@ -8,14 +14,8 @@ const blockSize = 15;
 const zoomSpeed = 0.3;
 
 const cameraTransform = {
-  /**
-   * origin of Coordinate system is (0,0)
-   */
-  originX: 0,
-    /**
-   * origin of Coordinate system is (0,0)
-   */
-  originY: 0,
+  originCoordinateX: 0,
+  originCoordinateY: 0,
   displacementX: 0,
   displacementY: 0,
   scale: 1
@@ -181,13 +181,9 @@ function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawGrid();
 
-  // The (0,0) Coordinate pair block
+  // The (0,0) Coordinate pair block drawing for dev reference
   const { displacementX, displacementY, scale } = cameraTransform;
   ctx.fillRect(displacementX * scale, displacementY * scale, blockSize * scale, blockSize * scale);
-
-  for (let i = 0; i < 150; i++) {
-    drawBlock(i, i);
-  }
 }
 
 render();
