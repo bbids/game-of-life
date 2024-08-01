@@ -21,17 +21,24 @@ const updatePanning = (event: MouseEvent) => {
   const localX = event.clientX;
   const localY = event.clientY;
 
-  cameraTransform.displacementX += localX - previousX;
-  cameraTransform.displacementY += localY - previousY;
+  const panningSpeed = 1 / cameraTransform.scale;
+
+  cameraTransform.displacementX += (localX - previousX) * panningSpeed;
+  cameraTransform.displacementY += (localY - previousY) * panningSpeed;
 
   previousX = localX;
   previousY = localY;
 }
 
-const updateZooming = (event: WheelEvent) => {
+const updateZooming = (event: WheelEvent): boolean => {
   const previousScale = cameraTransform.scale;
-  const zoomSpeedFactor = -0.0025;
-  const newScale = cameraTransform.scale += event.deltaY * zoomSpeedFactor;
+  const zoomSpeedFactor = event.deltaY < 0 ? 0.3 : -0.3;
+  const newScale = cameraTransform.scale * Math.exp(zoomSpeedFactor);
+
+  // console.log(Math.exp(zoomSpeedFactor * cameraTransform.scale))
+  console.log(cameraTransform.scale * Math.exp(zoomSpeedFactor))
+
+  if (newScale <= 0.005) return false;
 
   // difference to the top left
   const mouseX = (event.clientX / previousScale);
@@ -41,6 +48,8 @@ const updateZooming = (event: WheelEvent) => {
   cameraTransform.displacementX -= mouseX * (newScale / previousScale - 1);
   cameraTransform.displacementY -= mouseY * (newScale / previousScale - 1);
   cameraTransform.scale = newScale;
+
+  return true;
 }
 
 const onMouseMove = (event: MouseEvent) => {
@@ -52,9 +61,9 @@ const onMouseMove = (event: MouseEvent) => {
 const onMouseWheel = (event: WheelEvent) => {
   event.preventDefault();
 
-  updateZooming(event)
-
-  render();
+  if (updateZooming(event)) {
+    render();
+  }
 }
 
 canvas.addEventListener('click', () => {
@@ -73,21 +82,45 @@ canvas.addEventListener('mouseup', () => {
 })
 
 canvas.addEventListener('click', (event) => {
-  const { displacementX, displacementY, scale } = cameraTransform;
-
-  const originX = displacementX * scale;
-  const originY = displacementY * scale;
-
-  const i = Math.floor((event.clientX / scale - displacementX) / blockSize); 
-  const j = Math.floor((event.clientY / scale - displacementY) / blockSize);
-
-  console.log(i, j);
-
-  const squareX = originX + i * blockSize * scale;
-  const squareY = originY + j * blockSize * scale;
-
-  ctx.fillRect(squareX, squareY, blockSize * scale, blockSize * scale);
+  drawBlockFromClick(event);
 })
+
+function toScreenX(xCoordinate: number): number {
+  return (xCoordinate + cameraTransform.displacementX) * cameraTransform.scale
+}
+
+function toScreenY(yCoordinate: number): number {
+  return (yCoordinate + cameraTransform.displacementY) * cameraTransform.scale
+}
+
+function toCoordinateX(xScreen: number): number {
+  return (xScreen / cameraTransform.scale) - cameraTransform.displacementX;
+}
+
+function toCoordinateY(yScreen: number): number {
+  return (yScreen / cameraTransform.scale) - cameraTransform.displacementY;
+}
+
+function drawBlockFromClick(event: MouseEvent) {
+  const blockNrHorizontal = Math.floor(toCoordinateX(event.clientX) / blockSize); 
+  const blockNrVertical   = Math.floor(toCoordinateY(event.clientY) / blockSize);
+
+  console.log(blockNrHorizontal, blockNrVertical);
+
+  drawBlock(blockNrHorizontal, blockNrVertical);
+}
+
+function drawBlock(blockNrHorizontal: number, blockNrVertical: number) {
+  const { scale } = cameraTransform;
+
+  const displacedOriginX = toScreenX(0);
+  const displacedOriginY = toScreenY(0);
+
+  const blockX = displacedOriginX + blockNrHorizontal * blockSize * scale;
+  const blockY = displacedOriginY + blockNrVertical   * blockSize * scale;
+
+  ctx.fillRect(blockX, blockY, blockSize * scale, blockSize * scale);
+}
 
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -95,12 +128,16 @@ function render() {
 
   const { displacementX, displacementY, scale } = cameraTransform;
   ctx.fillRect(displacementX * scale, displacementY * scale, blockSize * scale, blockSize * scale);
+
+  for (let i = 0; i < 150; i++) {
+    drawBlock(i, i);
+  }
 }
 
 function drawGrid() {
   const { displacementX, displacementY, scale } = cameraTransform;
-  if (scale <= 0.25) return;
-
+  if (scale <= 0.4) return;
+  
   ctx.beginPath();
   ctx.strokeStyle = 'grey'
 
