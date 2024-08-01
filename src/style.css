@@ -17,11 +17,11 @@ canvas {
   -ms-interpolation-mode: nearest-neighbor;
 }
 
-.anomalyHeader {
+.anomaly-header {
   display: flex;
   justify-content: space-between;
 
-  .warningText {
+  .warning-text {
     color: red;
     font-weight: bold;
   }
