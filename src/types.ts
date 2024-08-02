@@ -1,5 +1,5 @@
 import Camera from "./Camera";
-import Cell from "./GridCell";
+import Cell from "./Cell";
 
 export type cellX = number;
 export type cellY = number;
@@ -45,6 +45,11 @@ export interface panningReference {
   y: number
 }
 
+/**
+* Zooming and panning:
+* - https://www.sandromaglione.com/articles/infinite-canvas-html-with-zoom-and-pan#convert-coordinates
+* - https://stackoverflow.com/questions/2916081/zoom-in-on-a-point-using-scale-and-translate
+*/
 export interface CameraControl {
   camera: Camera
 }

@@ -4,7 +4,7 @@ import { aliveCellsCollection } from "./types";
 export default class SimulationCanvas {
   simulation: Simulation;
   canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D;
+  ctx: RenderingContext;
 
   constructor(simulation: Simulation, canvas: HTMLCanvasElement) {
     this.simulation = simulation;

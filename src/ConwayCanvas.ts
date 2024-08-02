@@ -4,7 +4,13 @@ import Simulation from "./Simulation";
 import SimulationCanvas from "./SimulationCanvas";
 import { aliveCellsCollection, CameraControl } from "./types";
 
-export default class ConwayCanvas extends SimulationCanvas implements CameraControl {
+interface canvasRenderingContext2d {
+  ctx: CanvasRenderingContext2D
+}
+
+export default class ConwayCanvas extends SimulationCanvas implements CameraControl, canvasRenderingContext2d {
+  declare ctx: CanvasRenderingContext2D;
+
   grid: Grid;
   camera: Camera;
 
