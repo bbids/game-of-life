@@ -1,5 +1,5 @@
 import './style.css';
-import './render';
+import Simulation from './Simulation';
 
 function setupAnomalyHeader() {
   const anomalyHeader = document.querySelector(".anomaly-header") as HTMLElement;
@@ -11,5 +11,7 @@ function setupAnomalyHeader() {
 }
 
 setupAnomalyHeader();
-
-console.log("?HI");
+const canvas = document.querySelector('#main-canvas') as HTMLCanvasElement;
+const simulation = new Simulation(canvas);
+simulation.fillStartingCells();
+simulation.cycle();

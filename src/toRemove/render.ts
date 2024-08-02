@@ -4,6 +4,9 @@
  * https://stackoverflow.com/questions/2916081/zoom-in-on-a-point-using-scale-and-translate
  */
 
+/*
+import { aliveCellsCollection, cellCoordinatePair, cellX, cellY, referenceX, referenceY, screenX, screenY } from "./types";
+
 const canvas = document.getElementById('main-canvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d')!;
 
@@ -20,10 +23,12 @@ const cameraTransform = {
   displacementY: 0,
   scale: 1
 };
+*/
 
 // Used as a reference for computing displacement in panning
-let previousX = 0, previousY = 0;
+// let previousX = 0, previousY = 0;
 
+/*
 const updatePanning = (event: MouseEvent) => {
   const localX = event.clientX;
   const localY = event.clientY;
@@ -36,7 +41,9 @@ const updatePanning = (event: MouseEvent) => {
   previousX = localX;
   previousY = localY;
 }
+*/
 
+/*
 const updateZooming = (event: WheelEvent): boolean => {
   const previousScale = cameraTransform.scale;
   const zoomSpeedFactor = event.deltaY < 0 ? zoomSpeed : -zoomSpeed;
@@ -59,13 +66,17 @@ const updateZooming = (event: WheelEvent): boolean => {
 
   return true;
 }
+*/
 
+/*
 const onMouseMove = (event: MouseEvent) => {
   updatePanning(event);
 
   render()
 }
+*/
 
+/*
 const onMouseWheel = (event: WheelEvent) => {
   event.preventDefault();
 
@@ -78,8 +89,10 @@ const onMouseWheel = (event: WheelEvent) => {
 canvas.addEventListener('click', () => {
   canvas.addEventListener('wheel', onMouseWheel);
 });
+*/
 
 // panning
+/*
 canvas.addEventListener('mousedown', (event) => {
   previousX = event.clientX;
   previousY = event.clientY;
@@ -94,55 +107,46 @@ canvas.addEventListener('mouseup', () => {
 canvas.addEventListener('click', (event) => {
   drawBlockFromClick(event);
 })
+*/
 
 /*
-  Differentiate Screen and Coordinate value pairs,
-  former meant for drawing and later as a frame
-  of reference for computing former.
-
-*/
-function toScreenX(xCoordinate: number): number {
-  return (xCoordinate + cameraTransform.displacementX) * cameraTransform.scale
+function toScreenX(x: referenceX): screenX {
+  return (x + cameraTransform.displacementX) * cameraTransform.scale
 }
 
-function toScreenY(yCoordinate: number): number {
-  return (yCoordinate + cameraTransform.displacementY) * cameraTransform.scale
+function toScreenY(y: referenceY): screenY {
+  return (y + cameraTransform.displacementY) * cameraTransform.scale
 }
 
-function toCoordinateX(xScreen: number): number {
-  return (xScreen / cameraTransform.scale) - cameraTransform.displacementX;
+function toReferenceX(x: screenX): referenceX {
+  return (x / cameraTransform.scale) - cameraTransform.displacementX;
 }
 
-function toCoordinateY(yScreen: number): number {
-  return (yScreen / cameraTransform.scale) - cameraTransform.displacementY;
+function toReferenceY(y: screenY): referenceY {
+  return (y / cameraTransform.scale) - cameraTransform.displacementY;
 }
+  */
 
 /*
   Drawing
-*/
 
 function drawBlockFromClick(event: MouseEvent) {
-  const blockNrHorizontal = Math.floor(toCoordinateX(event.clientX) / blockSize); 
-  const blockNrVertical   = Math.floor(toCoordinateY(event.clientY) / blockSize);
+  const x: cellX = Math.floor(toReferenceX(event.clientX) / blockSize); 
+  const y: cellY  = Math.floor(toReferenceY(event.clientY) / blockSize);
 
-  console.log(blockNrHorizontal, blockNrVertical);
+  console.log(x, y);
 
-  drawBlock(blockNrHorizontal, blockNrVertical);
+  drawBlock({ x, y});
 }
 
-/**
- * 
- * @param blockNrHorizontal Integer that represents a block
- * @param blockNrVertical Integer that represents a block
- */
-function drawBlock(blockNrHorizontal: number, blockNrVertical: number) {
+function drawBlock(cellCoordinatePair: cellCoordinatePair) {
   const { scale } = cameraTransform;
 
   const displacedOriginX = toScreenX(0);
   const displacedOriginY = toScreenY(0);
 
-  const blockX = displacedOriginX + blockNrHorizontal * blockSize * scale;
-  const blockY = displacedOriginY + blockNrVertical   * blockSize * scale;
+  const blockX = displacedOriginX + cellCoordinatePair.x * blockSize * scale;
+  const blockY = displacedOriginY + cellCoordinatePair.y * blockSize * scale;
 
   ctx.fillRect(blockX, blockY, blockSize * scale, blockSize * scale);
 }
@@ -177,7 +181,7 @@ function drawGrid() {
   ctx.stroke();
 }
 
-function render() {
+export function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawGrid();
 
@@ -186,4 +190,9 @@ function render() {
   ctx.fillRect(displacementX * scale, displacementY * scale, blockSize * scale, blockSize * scale);
 }
 
-render();
+export function renderAliveCells(aliveCells: aliveCellsCollection) {
+  aliveCells.forEach((_, cellCoordinatePair) => {
+    drawBlock(cellCoordinatePair);
+  });
+}
+  */
