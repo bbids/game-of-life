@@ -9,9 +9,13 @@ function setupAnomalyHeader() {
     anomalyHeader.style.display = 'none';
   });
 }
-
 setupAnomalyHeader();
-const canvas = document.querySelector('#main-canvas') as HTMLCanvasElement;
+
+
+const canvas : HTMLCanvasElement | null= document.querySelector('#main-canvas');
+if (canvas === null) {
+  throw new Error("canvas missing");
+}
 const simulation = new Simulation(canvas);
 simulation.fillStartingCells();
 simulation.cycle();

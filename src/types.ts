@@ -1,3 +1,6 @@
+import Camera from "./Camera";
+import Cell from "./GridCell";
+
 export type cellX = number;
 export type cellY = number;
 export type screenX = number;
@@ -32,11 +35,7 @@ export interface referenceCoordinatePair {
   y: referenceY
 }
 
-export interface cellData {
-  age: number
-}
-
-export type aliveCellsCollection = Map<cellCoordinatePair, cellData>;
+export type aliveCellsCollection = Set<Cell>;
 
 /**
  * Used as a reference for computing displacement in panning
@@ -44,4 +43,8 @@ export type aliveCellsCollection = Map<cellCoordinatePair, cellData>;
 export interface panningReference {
   x: number
   y: number
+}
+
+export interface CameraControl {
+  camera: Camera
 }
