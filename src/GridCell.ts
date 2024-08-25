@@ -26,6 +26,7 @@ export default class GridCell extends Cell {
     const blockX = coordinateConversion.getScreenX(0) + this.x * screenCellSize;
     const blockY = coordinateConversion.getScreenY(0) + this.y * screenCellSize;
 
+    // ctx.fillStyle = Math.random() > 0.5 ? 'grey' : 'black';
     ctx.fillRect(blockX, blockY, screenCellSize, screenCellSize);
   }
 

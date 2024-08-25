@@ -1,5 +1,4 @@
 import Simulation from "./Simulation";
-import { aliveCellsCollection } from "./types";
 
 export default class SimulationCanvas {
   simulation: Simulation;
@@ -10,12 +9,6 @@ export default class SimulationCanvas {
     this.simulation = simulation;
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d')!;
-  }
-
-  drawAliveCells(aliveCells: aliveCellsCollection) {
-    aliveCells.forEach((cell) => {
-      cell.draw(this.ctx);
-    });
   }
 
 }

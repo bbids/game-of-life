@@ -18,4 +18,7 @@ if (canvas === null) {
 }
 const simulation = new Simulation(canvas);
 simulation.fillStartingCells();
-simulation.cycle();
+simulation.update();
+setInterval(() => {
+  simulation.cycle();
+}, 100);

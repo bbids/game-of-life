@@ -1,5 +1,4 @@
 import Camera from "./Camera";
-import Cell from "./Cell";
 
 export type cellX = number;
 export type cellY = number;
@@ -35,7 +34,7 @@ export interface referenceCoordinatePair {
   y: referenceY
 }
 
-export type aliveCellsCollection = Set<Cell>;
+export type aliveCellsCollection<T> = Map<`${number},${number}`, T>;
 
 /**
  * Used as a reference for computing displacement in panning
